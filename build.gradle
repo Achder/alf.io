@@ -22,18 +22,8 @@ import static java.lang.String.format
 
 buildscript {
 
-    dependencies {
-        classpath 'com.opentable.components:otj-pg-embedded:0.13.3'
-        classpath 'org.postgresql:postgresql:42.2.14'
-        classpath "org.springframework:spring-jdbc:$springVersion"
-
-        //this is for processing the index.html at compile time
-        classpath "com.github.alfio-event:alf.io-public-frontend:$alfioPublicFrontendVersion"
-        classpath "ch.digitalfondue.jfiveparse:jfiveparse:0.8.1"
-        //
-    }
-
     repositories {
+        mavenLocal()
         jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -43,6 +33,18 @@ buildscript {
             url "https://jitpack.io"
         }
     }
+
+    dependencies {
+        classpath 'com.opentable.components:otj-pg-embedded:0.13.3'
+        classpath 'org.postgresql:postgresql:42.2.14'
+        classpath "org.springframework:spring-jdbc:$springVersion"
+
+        //this is for processing the index.html at compile time
+        classpath "com.github.achder:alf.io-public-frontend:oka"
+        classpath "ch.digitalfondue.jfiveparse:jfiveparse:0.8.1"
+        //
+    }
+
 }
 
 plugins {
@@ -165,7 +167,7 @@ dependencies {
     compile 'ch.digitalfondue.basicxlsx:basicxlsx:0.5.1'
     compile 'org.imgscalr:imgscalr-lib:4.2'
 
-    compile "com.github.alfio-event:alf.io-public-frontend:$alfioPublicFrontendVersion"
+    compile "com.github.achder:alf.io-public-frontend:oka"
 
     testCompile 'com.opentable.components:otj-pg-embedded:0.13.3'
 
@@ -259,10 +261,10 @@ processResources {
         //
         // alf.io public frontend: read index.html rewrite path for css/js
 
-        final resource = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/resources/webjars/alfio-public-frontend/$alfioPublicFrontendVersion/alfio-public-frontend/index.html")
+        final resource = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/resources/webjars/alfio-public-frontend/oka/alfio-public-frontend/index.html")
         final indexDoc = new Parser().parse(new InputStreamReader(resource, StandardCharsets.UTF_8))
 
-        final basePath = "webjars/alfio-public-frontend/$alfioPublicFrontendVersion/alfio-public-frontend/"
+        final basePath = "webjars/alfio-public-frontend/oka/alfio-public-frontend/"
         NodeMatcher scriptNodes = Selector.select().element("script").toMatcher()
 
         indexDoc.getAllNodesMatching(scriptNodes).stream().forEach({
@@ -315,7 +317,7 @@ bootRun {
         "-Ddatasource.password=${project.datasourcePassword}",
         "-Dalfio.version=${project.version}",
         "-Dalfio.build-ts=${ZonedDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_ZONED_DATE_TIME)}",
-        "-Dalfio.frontend.version=$alfioPublicFrontendVersion"
+        "-Dalfio.frontend.version=oka"
     ]
     if(externalConfig.exists()) {
         opts += externalConfig.readLines()

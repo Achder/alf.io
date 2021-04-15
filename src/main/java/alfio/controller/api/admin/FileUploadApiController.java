@@ -46,8 +46,8 @@ public class FileUploadApiController {
 
     private static final MimeType MIME_TYPE_IMAGE_SVG = MimeTypeUtils.parseMimeType("image/svg+xml");
 
-    private static final int IMAGE_THUMB_MAX_WIDTH_PX = 500;
-    private static final int IMAGE_THUMB_MAX_HEIGHT_PX = 500;
+    private static final int IMAGE_THUMB_MAX_WIDTH_PX = 1500;
+    private static final int IMAGE_THUMB_MAX_HEIGHT_PX = 1500;
 
     private final FileUploadManager fileUploadManager;
 
